@@ -5,7 +5,6 @@ import { Container, ContainerMiddlew } from './styles';
 
 import InputSearch from '../../Components/InputSearch';
 
-
 function Home() {
     return <Container>
         <header>

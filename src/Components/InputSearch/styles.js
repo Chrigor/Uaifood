@@ -1,15 +1,20 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-     display:flex;
+            display:flex;
             justify-content:space-between;
             align-items:center;
 
             margin-top:16px;
+            width: 100%;
+
+            margin-bottom:8px;
 
             .containerInput {
                 position:relative;
                 width:100%;
+
+                border: 1px solid var(--border);
 
                 i {
                     color:var(--placeholder);
@@ -20,13 +25,13 @@ export const Container = styled.div`
 
                     transform: translateY(-50%);
 
-                    font-size:24pt;
+                    font-size:${props => props.fontSize}pt;
                 }
                 
                 input {
                     width:100%;
                     padding: 8px 8px 8px 48px;
-                    font-size:24pt;
+                    font-size:${props => props.fontSize}pt;
                     font-family: 'Open Sans', sans-serif;
                     font-weight: 400;
                     color:var(--placeholder);
@@ -36,11 +41,12 @@ export const Container = styled.div`
             > button {
                 cursor:pointer;
 
-                font-size:24pt;
+                font-size:${props => props.fontSize}pt;
                 font-weight:600;
 
                 margin-left: 24px;
-                width: 320px;
+
+                width:${props => props.fontSize == 16 ? 200 : 320}px;
                 padding: 8px;
 
                 background:var(--green);
@@ -48,16 +54,38 @@ export const Container = styled.div`
 
                 box-sizing: content-box;
                 text-transform: uppercase;
+
+                transition:all 0.3s;
+
+                &:hover {
+                    opacity:0.85;
+                }
             }
+
+
+              
+        @media(max-width: 800px) {
+            padding: 8px;
+            flex-direction:column;
+
+            > button {
+                margin-top: 16px;
+
+                width:150px;
+            }
+        }
 `;
 
 export const ContainerSuggestion = styled.div`
-    top:50px;
+    display:${(props) => props.display};
+    top: ${props => props.fontSize === 16 ? 40 : 50};
     left:0;
     background: var(--white);
     position:absolute;
     width: 100%;
     padding: 8px 16px;
+
+    border:${props => props.fontSize === 16 ? '1px solid var(--border-light)' : 'none'};
 
     .text {
         font-family: 'Open Sans', sans-serif;
@@ -79,13 +107,13 @@ export const ContainerSuggestion = styled.div`
         justify-content:flex-start;
 
         > h1 {
-            font-size: 24pt;
+            font-size:${props => props.fontSize}pt;
             color:var(--datalist-text);
         }
 
         > span {
             width:100%;
-            font-size:14pt;
+            font-size:${window.location.pathname.includes('list-restaurant') ? 8 : 14}pt;
             color:var(--placeholder);
         }
     }

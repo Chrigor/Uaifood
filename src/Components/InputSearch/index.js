@@ -1,15 +1,17 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { debounce } from "lodash";
+import { useHistory } from "react-router-dom";
 
-import LogoUaiFood from '../../Assets/Images/logo-white.jpg';
-import { Container, ContainerMiddlew, ContainerSuggestion } from './styles';
+import { Container, ContainerSuggestion } from './styles';
 
 
 import { loadRequest, loadDefault } from '../../Store/ducks/Cities/actions';
 
-function InputSearch() {
+function InputSearch({fontSize = 24}) {
     const dispatch = useDispatch();
+    const history = useHistory();
+
     const handler = useCallback(debounce(handleChangeCity, 500), []);
 
     const { data: dataCities } = useSelector(state => state["Cities"]);
@@ -24,9 +26,10 @@ function InputSearch() {
     const [selectedCity, setSelectedCity] = useState('');
 
     useEffect(() => {
+
         navigator.geolocation.getCurrentPosition(function (position) {
             setPosition(position.coords);
-        });
+        });   
     }, []);
 
 
@@ -42,31 +45,34 @@ function InputSearch() {
     }
 
     function handleClickSearch() {
-        console.log("Buscar");
-        console.log(selectedCity);
+        history.push(`/list-restaurant/${selectedCity.city}/${selectedCity.id}`)
     }
 
-    function handleClickCity(param) {
+    function handleClickCity(param, id) {
         setSearch(param);
-        setSelectedCity(param);
+        setSelectedCity({
+            city: param,
+            id
+        });
 
         dispatch(loadDefault());
     }
 
-    return <Container>
+    return <Container fontSize={fontSize}>
         <div className="containerInput">
             <i className="fas fa-map-marker-alt"></i>
             <input placeholder="Digite sua cidade" onChange={(event) => {
                 setSearch(event.target.value);
-                handler(event)
+                handler(event);
             }}
                 value={search}
             />
-            <ContainerSuggestion>
 
-                {dataCities.map(({ name }) => {
+            <ContainerSuggestion display={dataCities.length > 0 ? 'block' : 'none'} fontSize={fontSize}>
+
+                {dataCities.map(({ id, name }) => {
                     return (
-                        <button key={name} onClick={() => handleClickCity(name)}>
+                        <button key={name} onClick={() => handleClickCity(name, id)}>
                             <h1 className="text">{name}</h1>
                             <span className="text">Estado de {name}</span>
                         </button>
@@ -75,7 +81,7 @@ function InputSearch() {
 
             </ContainerSuggestion>
         </div>
-        <button disabled={selectedCity.length <= 0 ? true : false} onClick={handleClickSearch}>Buscar</button>
+        <button disabled={Object.keys(selectedCity).length <= 0 ? true : false} onClick={handleClickSearch}>Buscar</button>
     </Container>
 }
 

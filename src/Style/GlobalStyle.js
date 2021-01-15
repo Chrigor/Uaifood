@@ -1,5 +1,5 @@
 import { createGlobalStyle } from "styled-components";
-import Background from '../Assets/Images/bg.jpg';
+
 
 export default createGlobalStyle`
   * {
@@ -11,6 +11,7 @@ export default createGlobalStyle`
   
   html, body, #root {
     height: 100%;
+    width:100%;
   }
 
   *, button, input {
@@ -18,11 +19,16 @@ export default createGlobalStyle`
     outline:0;
     font-family: 'Poppins', sans-serif;
   }
+
   body {
     position:relative;
-    background-image: url(${Background});
-    background-position:center;
-    background-size:cover;
+    font-size: calc(1em + 1vw);
+  }
+
+  ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
   }
   
   :root {
@@ -33,5 +39,9 @@ export default createGlobalStyle`
     --placeholder:#767676;
     --datalist-text:#484848;
     --border: #ddd;
+    --background-list-restaurant: #FAFAFA;
+    --brackground-loading: rgba(50,50,50,0.5);
+    --brackground-filters: rgba(50,50,50,1);
+    --border-light: #eee;
   }
 `;
